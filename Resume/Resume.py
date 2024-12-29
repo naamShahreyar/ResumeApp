@@ -1,16 +1,24 @@
-"""Welcome to Reflex! This file outlines the steps to create a basic app."""
 
 import reflex as rx
 
 from rxconfig import config
+from .Utils import Neo4jHandler, find_candidates_with_skills, get_candidate, HuggingFaceEmbeddingModel
+from langchain.vectorstores.neo4j_vector import Neo4jVector
+from .params import Neo4j_params
+from .Secrets import Neo4j_url, Neo4j_username, Neo4j_password   
 
-
-class State(rx.State):
-    """The app state."""
-
-    ...
-
-
+# Neo4j configuration
+neo4j_handler = Neo4jHandler(Neo4j_url, Neo4j_username,Neo4j_password)
+neo4j_vector_index = Neo4jVector.from_existing_graph(
+    HuggingFaceEmbeddingModel,
+    url=Neo4j_url,
+    username=Neo4j_username,
+    password=Neo4j_password,
+    index_name=Neo4j_params['Neo4j_index_name'],
+    node_label=Neo4j_params['Neo4j_node_label'],
+    text_node_properties=Neo4j_params['Neo4j_text_node_properties'],
+    embedding_node_property=Neo4j_params['Neo4j_embedding_node_property'],
+)
 def index() -> rx.Component:
     # Welcome Page (Index)
     return rx.container(

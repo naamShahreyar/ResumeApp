@@ -4,3 +4,4 @@ assets/external/
 *.py[cod]
 __pycache__/
 version1.ipynb
+Secrets.py
